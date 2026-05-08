@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>施術のご案内</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300&family=Zen+Kaku+Gothic+New:wght@300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f3f1;
+  --white: #fafaf9;
+  --card: #f7f6f4;
+  --line: #d8d5d0;
+  --text: #2c2c2a;
+  --text-mid: #484845;
+  --text-light: #6e6e6a;
+  --accent: #8a7d70;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { font-size: 112%; }
+html, body { background:var(--bg); font-family:'Zen Kaku Gothic New',sans-serif; font-weight:300; color:var(--text); min-height:100vh; }
+.hero { background:var(--white); padding:56px 32px 44px; text-align:center; border-bottom:1px solid var(--line); }
+.hero-en { font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:11px; letter-spacing:0.35em; color:var(--text-light); text-transform:uppercase; margin-bottom:18px; }
+.hero-title { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:36px; letter-spacing:0.12em; color:var(--text); line-height:1; margin-bottom:18px; }
+.hero-rule { width:32px; height:1px; background:var(--line); margin:0 auto 18px; }
+.hero-sub { font-family:'Noto Serif JP',serif; font-weight:200; font-size:11px; letter-spacing:0.18em; color:var(--text-light); line-height:2.2; }
+.menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border-top:1px solid var(--line); }
+.menu-card { background:var(--white); padding:36px 20px 32px; display:flex; flex-direction:column; align-items:center; cursor:pointer; transition:background 0.2s; min-height:160px; justify-content:center; }
+.menu-card:active { background:var(--card); }
+.card-num { font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:22px; letter-spacing:0.25em; color:var(--text-light); margin-bottom:12px; }
+.card-title-en { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:15px; letter-spacing:0.18em; color:#1a1a18; text-transform:uppercase; margin-bottom:8px; text-align:center; line-height:1.4; }
+.card-title-jp { font-family:'Noto Serif JP',serif; font-weight:200; font-size:10px; letter-spacing:0.15em; color:var(--text-light); text-align:center; line-height:1.7; }
+.footer { padding:36px 32px; text-align:center; border-top:1px solid var(--line); background:var(--white); }
+.footer-clinic { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:13px; letter-spacing:0.3em; color:var(--text-mid); margin-bottom:6px; }
+.footer-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.25em; color:var(--text-light); }
+.page-overlay { display:none; position:fixed; inset:0; background:var(--white); z-index:200; overflow-y:auto; }
+.page-overlay.active { display:block; animation:pageIn 0.4s cubic-bezier(0.16,1,0.3,1); }
+@keyframes pageIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.page-header { padding:52px 28px 32px; border-bottom:1px solid var(--line); background:var(--white); position:relative; }
+.back-btn { position:absolute; top:18px; left:20px; background:none; border:none; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:11px; letter-spacing:0.2em; color:var(--text-light); cursor:pointer; padding:8px 4px; }
+.back-btn::before { content:'← '; }
+.page-num { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.3em; color:var(--text-light); margin-bottom:10px; }
+.page-title-en { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:28px; letter-spacing:0.1em; color:var(--text); margin-bottom:8px; }
+.page-title-jp { font-family:'Noto Serif JP',serif; font-weight:200; font-size:11px; letter-spacing:0.18em; color:var(--text-light); }
+.page-body { padding:32px 24px 72px; background:var(--bg); min-height:60vh; }
+.step-list { display:flex; flex-direction:column; }
+.step-item { display:flex; gap:20px; padding:24px 0; border-bottom:1px solid var(--line); align-items:flex-start; animation:fadeUp 0.4s ease backwards; }
+.step-item:last-child { border-bottom:none; }
+.step-index { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:24px; font-weight:300; color:var(--line); line-height:1; min-width:28px; padding-top:2px; }
+.step-content h3 { font-family:'Noto Serif JP',serif; font-weight:300; font-size:13px; letter-spacing:0.1em; color:var(--text); margin-bottom:10px; }
+.step-content p, .info-block p, .caution-block p, .faq-a div { font-size:12px; line-height:2; color:var(--text-mid); letter-spacing:0.05em; }
+.info-block { background:var(--white); border:1px solid var(--line); padding:22px 20px; margin-bottom:10px; animation:fadeUp 0.4s ease backwards; }
+.info-block h3 { font-family:'Noto Serif JP',serif; font-weight:300; font-size:12px; letter-spacing:0.12em; color:var(--text); margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--line); }
+.faq-item { background:var(--white); border:1px solid var(--line); margin-bottom:8px; animation:fadeUp 0.4s ease backwards; }
+.faq-q { padding:18px 20px; font-family:'Noto Serif JP',serif; font-weight:300; font-size:12px; letter-spacing:0.08em; color:var(--text); display:flex; gap:12px; border-bottom:1px solid var(--line); }
+.faq-q::before { content:'Q'; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:var(--accent); flex-shrink:0; line-height:1.4; }
+.faq-a { padding:16px 20px; font-size:12px; line-height:2; color:var(--text-mid); display:flex; gap:12px; letter-spacing:0.05em; }
+.faq-a::before { content:'A'; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:var(--text-light); flex-shrink:0; line-height:1.4; }
+.caution-block { background:var(--white); border:1px solid var(--line); border-left:2px solid var(--accent); padding:22px 20px; margin-bottom:10px; animation:fadeUp 0.4s ease backwards; }
+.caution-block h3 { font-family:'Noto Serif JP',serif; font-weight:300; font-size:12px; letter-spacing:0.12em; color:var(--text); margin-bottom:10px; }.admin-btn-trigger { position:fixed; bottom:24px; right:20px; background:rgba(44,44,42,0.25); border:none; border-radius:50%; width:40px; height:40px; font-size:16px; cursor:pointer; z-index:300; }
+.admin-overlay { display:none; position:fixed; inset:0; background:var(--bg); z-index:500; overflow-y:auto; }
+.admin-overlay.active { display:block; }
+.admin-login-wrap { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 28px; }
+.admin-login-wrap h2 { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:24px; letter-spacing:0.15em; color:var(--text); margin-bottom:8px; }
+.admin-login-wrap p { font-size:12px; color:var(--text-light); margin-bottom:32px; letter-spacing:0.1em; }
+.admin-pw-input { width:100%; max-width:280px; padding:14px 16px; border:1px solid var(--line); background:var(--white); font-size:14px; color:var(--text); margin-bottom:12px; outline:none; border-radius:2px; font-family:'Zen Kaku Gothic New',sans-serif; }
+.admin-login-btn { width:100%; max-width:280px; padding:14px; background:var(--text); color:var(--white); border:none; font-size:12px; letter-spacing:0.2em; cursor:pointer; border-radius:2px; font-family:'Cormorant Garamond',serif; font-style:italic; }
+.admin-err { color:#a05050; font-size:11px; margin-top:10px; display:none; }
+.admin-panel { display:none; }
+.admin-panel.active { display:block; }
+.admin-header { background:var(--text); padding:18px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+.admin-header h2 { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:var(--white); letter-spacing:0.2em; font-weight:300; }
+.admin-header button { background:none; border:1px solid rgba(255,255,255,0.3); color:var(--white); font-size:11px; padding:6px 14px; cursor:pointer; border-radius:20px; font-family:'Cormorant Garamond',serif; font-style:italic; }
+.admin-tabs { display:flex; overflow-x:auto; background:var(--white); border-bottom:1px solid var(--line); padding:0 8px; }
+.admin-tab { padding:14px 14px; font-size:11px; letter-spacing:0.1em; color:var(--text-light); cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; font-family:'Cormorant Garamond',serif; font-style:italic; }
+.admin-tab.active { color:var(--text); border-bottom-color:var(--text); }
+.admin-body { padding:20px 18px 80px; }
+.admin-field { margin-bottom:18px; }
+.admin-field label { display:block; font-size:11px; color:var(--text-mid); letter-spacing:0.1em; margin-bottom:6px; font-family:'Noto Serif JP',serif; font-weight:300; }
+.admin-field textarea { width:100%; padding:12px; border:1px solid var(--line); background:var(--white); font-size:13px; line-height:1.8; color:var(--text); outline:none; border-radius:2px; font-family:'Zen Kaku Gothic New',sans-serif; font-weight:300; resize:vertical; min-height:80px; }
+.admin-save { width:100%; padding:15px; background:var(--text); color:var(--white); border:none; font-size:12px; letter-spacing:0.2em; cursor:pointer; border-radius:2px; font-family:'Cormorant Garamond',serif; font-style:italic; margin-top:4px; }
+.admin-saved { text-align:center; font-size:11px; color:#5a7a5a; margin-top:10px; display:none; }
+</style>
+</head>
+<body>
+<div id="home">
+  <div class="hero">
+    <p class="hero-en">Information</p>
+    <h1 class="hero-title">Eyebrow Artmake</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">施術に関する大切なご案内です<br>ご来院前にご確認ください</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card" onclick="openPage(0)">
+      <p class="card-num">01</p>
+      <p class="card-title-en">Flow</p>
+      <p class="card-title-jp">アートメイクについて<br>ご来院からの流れ</p>
+    </div>
+    <div class="menu-card" onclick="openPage(1)">
+      <p class="card-num">02</p>
+      <p class="card-title-en">Caution</p>
+      <p class="card-title-jp">禁忌事項</p>
+    </div>
+    <div class="menu-card" onclick="openPage(2)">
+      <p class="card-num">03</p>
+      <p class="card-title-en">FAQ</p>
+      <p class="card-title-jp">よくある<br>ご質問</p>
+    </div>
+    <div class="menu-card" onclick="openPage(3)">
+      <p class="card-num">04</p>
+      <p class="card-title-en">Preparation</p>
+      <p class="card-title-jp">施術前の<br>ご準備</p>
+    </div>
+    <div class="menu-card" onclick="openPage(4)">
+      <p class="card-num">05</p>
+      <p class="card-title-en">Aftercare</p>
+      <p class="card-title-jp">アフターケアと<br>施術後の注意事項</p>
+    </div>
+    <div class="menu-card" onclick="openPage(5)">
+      <p class="card-num">06</p>
+      <p class="card-title-en">Visit</p>
+      <p class="card-title-jp">ご来院時の<br>お願い</p>
+    </div>
+  </div>
+  <footer class="footer">
+    <p class="footer-clinic">Stella Beauty Clinic</p>
+    <p class="footer-sub">Okinawa · Tokyo</p>
+  </footer>
+</div>
+<div class="page-overlay" id="pageOverlay">
+  <div class="page-header">
+    <button class="back-btn" onclick="closePage()">back</button>
+    <p class="page-num" id="pageNum"></p>
+    <h2 class="page-title-en" id="pageTitleEn"></h2>
+    <p class="page-title-jp" id="pageTitleJp"></p>
+  </div>
+  <div class="page-body" id="pageBody"></div>
+</div>
+<button class="admin-btn-trigger" onclick="openAdmin()">✏️</button>
+<div class="admin-overlay" id="adminOverlay">
+  <div id="adminLoginWrap" class="admin-login-wrap">
+    <h2>Admin</h2>
+    <p>パスワードを入力してください</p>
+    <input class="admin-pw-input" type="password" id="adminPw" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="admin-login-btn" onclick="checkPw()">Login</button>
+    <p class="admin-err" id="adminErr">パスワードが違います</p>
+  </div>
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-header">
+      <h2>Edit Content</h2>
+      <button onclick="closeAdmin()">× 閉じる</button>
+    </div>
+    <div class="admin-tabs" id="adminTabs"></div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div><script>
+const PW = 'RUNRUNNO1';
+const store = {};
+const VERSION = 'v11';
+if (localStorage.getItem('artmake_version') !== VERSION) {
+  ['05_b0','05_s1','05_s2','05_s3','05_s4','05_b1'].forEach(k => {
+    localStorage.removeItem('artmake_' + k);
+  });
+  localStorage.setItem('artmake_version', VERSION);
+}
+function save(k, v) {
+  store[k] = v;
+  try { localStorage.setItem(k, v); } catch(e) {}
+}
+function load(k) {
+  try { return localStorage.getItem(k) || store[k] || null; } catch(e) { return store[k] || null; }
+}
+const defaults = {
+  '01_about': 'アートメイクとは、皮膚のごく浅い部分に色素を入れる施術です。タトゥーとは異なり、時間の経過とともに少しずつ色素が薄くなる点が特徴です。汗や水では落ちないため、すっぴんでも美しい状態を保てます。\n\n日本では医療行為として定められており、医師または看護師のみが施術を行うことができます。',
+  '01_s1': '公式LINEよりご予約ください。ご不明な点やご相談もお気軽にどうぞ。',
+  '01_s2': 'ご希望のデザインや普段のメイク、お悩みをお聞きします。同意書のご記入もこちらで行います。',
+  '01_s3': '骨格・筋肉の動きに合わせてデザインを作成します。施術前後の比較のため写真撮影を行います。',
+  '01_s4': '塗る麻酔を使用してから施術を行います。眉の施術時間は約2時間が目安です。',
+  '01_s5': '施術後のケア方法をご説明します。次回のご予約もこちらで承ります。',
+  '02_q1': '2回で完成を目指しています。1回目は特に免疫反応やターンオーバーの影響で定着は30〜50%程と薄くなりやすいですが、1回目は土台作りとしてベースをつくり、2回目で色味や形を微調整して理想に仕上げていきます。',
+  '02_q1b': 'アートメイクは、お顔に馴染む自然な仕上がりを重視しているため、タトゥーとは異なり皮膚代謝の影響を受ける浅い層へ色素を入れていきます。そのため施術後は徐々に自然に薄くなっていきます\n\n一見デメリットに感じるかもしれませんが、濃く深く残りすぎるアートメイクは、色が暗く滲んでお顔から浮いたり、お顔立ちや好みの変化に合わせた調整が難しくなってしまいます。\n\n自然さを保ちながら綺麗な状態を維持していくために、定期的なメンテナンス（リタッチ）を前提とした施術を行っております。',
+  '02_q1c': '1回目の施術から3ヶ月後を推奨しております。肌へのダメージを考慮し、必ず1回目施術後から1ヶ月以上空けるようおすすめしております。',
+  '02_q4b': '肌質やライフスタイルによって個人差はありますが、約1〜2年程で徐々に薄くなっていきます。',
+  '02_q4c': '「全体的に薄くなってきた」「メイクがしづらくなったな」と感じたタイミングがリタッチの目安です。綺麗な状態を維持したい方は、1年前後でのメンテナンスをおすすめしております。',
+  '02_q4d': '施術2週間以降でお肌状態が落ち着いてからの脱色をおすすめしております。',
+  '02_q4e': 'アートメイクは「8割」、残り「2割」をメイクで調整していただくバランスが、最も自然で扱いやすく、長く後悔しにくいアートメイクの秘訣だと考えております。\nやりすぎ感のない自然なお顔を維持するためには、アートメイクは"眉のベース"として整え、その時のお顔立ちや雰囲気に合わせてメイクで調整していただくのがおすすめです。',
+  '02_q2': '初めは「チク」「ピリ」と部分的に感じますが、表面麻酔を随時追加していくので、施術の途中からはウトウト寝られる方が多いです。感覚としては、爪楊枝のような細い先端のもので触れられている感じです。',
+  '02_q3': '施術直後から2〜3日は色が濃く出ますが、普段のメイクより少し濃い程度です。1週間ほどで自然になじみます。',
+  '02_q5': 'ほとんどの方が「自分に似合う眉が分からない」と同じお悩みを抱えています。\n骨格や筋肉の癖、自眉の状態、お客様の雰囲気や好みなどを見ながら、お顔全体のバランスに合わせて、お一人お一人に合ったデザインをご提案しております。\n「似合う形にお任せしたい」というデザインの丸投げも大歓迎です。一緒に理想の眉を見つけていきましょう。',
+  '02_q9': 'アートメイクに使用する色素には金属成分が含まれる場合があり、MRI検査時に影響が出ることがあります。検査を受ける際は必ず医療機関にアートメイクを受けていることをお伝えください。',
+  '03_b1': '眉毛の脱色は、施術1週間前までにお済ませください。普段、眉マスカラで明るくメイクされている方は、事前の脱色をおすすめします。\n\n※施術後1週間はメイク不可となります。',
+  '03_b2': 'アルコール・カフェインの摂取はお控えください。色素の定着や施術の仕上がりに影響する場合があります。',
+  '03_b3': '・眉メイクをした状態でお越しください（眉マスカラは不可）\n・自眉はできるだけ処理せず、生やした状態でお越しください\n・ご希望のデザインのイメージ画像やお写真をご準備いただけるとスムーズです',
+  '04_b1': '・妊娠中の方\n・授乳中の方（断乳後48時間経過すれば施術可）\n・ペースメーカーをご使用の方\n・ケロイド体質・重度の金属アレルギー・アトピー性皮膚炎の方\n・施術部位に皮膚疾患がある方\n・アレルギー反応が出やすい方（事前にご相談ください）\n・血液感染症の方（HIV・B型肝炎・C型肝炎・梅毒 等）\n・当日、医師または看護師が施術困難と判断した場合\n・18歳未満の方',
+  '04_b2': '・持病をお持ちの方\n・服薬中の方（特に血液をサラサラにするお薬）\n・金属アレルギーの方\n・アートメイク歴のある方\n・アトピー性皮膚炎など、肌に敏感さがある方',
+  '04_b3': '・日焼け直後\n・体調不良時・生理中（肌が敏感になっているため）\n・施術部位に炎症・傷がある場合',
+  '05_s1': '・過度な運動・アルコール摂取は出血や腫れの原因となりますのでお控えください\n・施術後24時間は施術部位が濡れないようにお過ごしください\n・ワセリンを綿棒にとり、1日2〜3回薄く塗布してください（3日間）',
+  '05_s2': '・色が最も濃く感じやすい時期です。1週間程度で自然になじみますのでご安心ください\n・肌質によってマーキングの塗料が残る場合がありますが、2〜3日で代謝により薄くなります\n・プール・温泉・サウナはお控えください',
+  '05_s3': '・施術部位の薄皮が剥けてきますが、触れずに自然に剥がれ落ちるのをお待ちください（色むらの原因になります）\n・眉メイクは引き続きお控えください\n・プール・温泉・サウナが解禁となります',
+  '05_s4': '・眉メイクが解禁となります\n・色が完全に定着する時期です\n・施術部位への紫外線にお気をつけください（色あせ・退色の原因となります）',
+  '06_b1': '施術時間は眉アートメイクで約2〜2.5時間が目安です。カウンセリングやデザインの時間も含まれますので、お時間に余裕をもってご来院ください。',
+  '06_b2': '眉メイクをした状態でお越しください（眉マスカラは除く）。普段のメイクの濃さや形を確認しながらデザインを進めます。',
+  '06_b3': '体調不良の場合は無理をせず、事前にご連絡の上、日程の変更をお申し付けください。生理中は肌が敏感になっているため、できれば施術日をずらすことをおすすめします。',
+  '06_b4': 'ご予約の変更・キャンセルは、前日までに公式LINEにてご連絡ください。当日の無断キャンセルはお控えいただけますようお願いします。',
+};
+function t(k) {
+  const v = load(k) || defaults[k] || '';
+  return v.replace(/\n/g, '<br>');
+}
+const pageDefs = [
+  { num:'01', en:'Flow', jp:'アートメイクについて・ご来院からの流れ' },
+  { num:'02', en:'Caution', jp:'禁忌事項' },
+  { num:'03', en:'FAQ', jp:'よくあるご質問' },
+  { num:'04', en:'Preparation', jp:'施術前のご準備' },
+  { num:'05', en:'Aftercare', jp:'アフターケアと施術後の注意事項' },
+  { num:'06', en:'Visit', jp:'ご来院時のお願い' },
+];
+function buildHTML(i) {
+  if (i === 0) return `
+    <div class="info-block"><h3>アートメイクとは</h3><p>${t('01_about')}</p></div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-index">1</span><div class="step-content"><h3>ご予約</h3><p>${t('01_s1')}</p></div></div>
+      <div class="step-item"><span class="step-index">2</span><div class="step-content"><h3>カウンセリング</h3><p>${t('01_s2')}</p></div></div>
+      <div class="step-item"><span class="step-index">3</span><div class="step-content"><h3>デザイン・写真撮影</h3><p>${t('01_s3')}</p></div></div>
+      <div class="step-item"><span class="step-index">4</span><div class="step-content"><h3>麻酔・施術</h3><p>${t('01_s4')}</p></div></div>
+      <div class="step-item"><span class="step-index">5</span><div class="step-content"><h3>アフターケアのご説明・お会計</h3><p>${t('01_s5')}</p></div></div>
+    </div>`;
+  if (i === 2) return `
+    <div class="faq-item"><div class="faq-q">アートメイクは何回必要ですか？</div><div class="faq-a"><div>${t('02_q1')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">なぜ1回で定着しないのですか？</div><div class="faq-a"><div>${t('02_q1b')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">2回目の施術はいつ頃ですか？</div><div class="faq-a"><div>${t('02_q1c')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">どのくらい持続しますか？</div><div class="faq-a"><div>${t('02_q4b')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">リタッチのタイミングはいつですか？</div><div class="faq-a"><div>${t('02_q4c')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">アートメイクをしたらメイクは必要なくなりますか？</div><div class="faq-a"><div>${t('02_q4e')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">痛みはありますか？</div><div class="faq-a"><div>${t('02_q2')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">ダウンタイムはどのくらいですか？</div><div class="faq-a"><div>${t('02_q3')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">眉毛のデザインに悩んでいます</div><div class="faq-a"><div>${t('02_q5')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">アートメイク後にMRI検査は受けられますか？</div><div class="faq-a"><div>${t('02_q9')}</div></div></div>
+    <div class="faq-item"><div class="faq-q">眉毛の脱色はいつからできますか？</div><div class="faq-a"><div>${t('02_q4d')}</div></div></div>`;
+  if (i === 3) return `
+    <div class="info-block"><h3>施術1週間前まで</h3><p>${t('03_b1')}</p></div>
+    <div class="info-block"><h3>施術前日</h3><p>${t('03_b2')}</p></div>
+    <div class="info-block"><h3>当日のご準備</h3><p>${t('03_b3')}</p></div>`;
+  if (i === 1) return `
+    <div class="caution-block"><h3>施術をお受けいただけない場合</h3><p>${t('04_b1')}</p></div>
+    <div class="caution-block"><h3>事前にご相談が必要な場合</h3><p>${t('04_b2')}</p></div>
+    <div class="caution-block"><h3>施術を避けた方がよい時期</h3><p>${t('04_b3')}</p></div>`;
+  if (i === 4) return `
+    <div class="step-list">
+      <div class="step-item"><span class="step-index">1</span><div class="step-content"><h3>施術当日</h3><p>${t('05_s1')}</p></div></div>
+      <div class="step-item"><span class="step-index">2</span><div class="step-content"><h3>翌日〜3日目</h3><p>${t('05_s2')}</p></div></div>
+      <div class="step-item"><span class="step-index">3</span><div class="step-content"><h3>7〜14日目</h3><p>${t('05_s3')}</p></div></div>
+      <div class="step-item"><span class="step-index">4</span><div class="step-content"><h3>14日目〜1ヶ月</h3><p>${t('05_s4')}</p></div></div>
+    </div>`;
+  if (i === 5) return `
+    <div class="info-block"><h3>お時間について</h3><p>${t('06_b1')}</p></div>
+    <div class="info-block"><h3>当日のメイクについて</h3><p>${t('06_b2')}</p></div>
+    <div class="info-block"><h3>ご体調について</h3><p>${t('06_b3')}</p></div>
+    <div class="info-block"><h3>キャンセルポリシー</h3><p>${t('06_b4')}</p></div>`;
+}
+function openPage(i) {
+  const p = pageDefs[i];
+  document.getElementById('pageNum').textContent = p.num;
+  document.getElementById('pageTitleEn').textContent = p.en;
+  document.getElementById('pageTitleJp').textContent = p.jp;
+  document.getElementById('pageBody').innerHTML = buildHTML(i);
+  const o = document.getElementById('pageOverlay');
+  o.classList.add('active');
+  o.scrollTop = 0;
+}
+function closePage() {
+  document.getElementById('pageOverlay').classList.remove('active');
+}
+const adminBlocks = [
+  [['アートメイクとは','01_about'],['ステップ1：ご予約','01_s1'],['ステップ2：カウンセリング','01_s2'],['ステップ3：デザイン・撮影','01_s3'],['ステップ4：麻酔・施術','01_s4'],['ステップ5：アフターケア・お会計','01_s5']],
+  [['施術をお受けいただけない場合','04_b1'],['事前にご相談が必要な場合','04_b2'],['施術を避けた方がよい時期','04_b3']],
+  [['Q. 何回必要？','02_q1'],['Q. なぜ1回で定着しない？','02_q1b'],['Q. 2回目はいつ？','02_q1c'],['Q. どのくらい持続する？','02_q4b'],['Q. リタッチのタイミング','02_q4c'],['Q. メイクは不要になる？','02_q4e'],['Q. 痛みは？','02_q2'],['Q. ダウンタイムは？','02_q3'],['Q. 眉毛のデザインに悩んでいます','02_q5'],['Q. MRI検査について','02_q9'],['Q. 眉毛の脱色はいつから？','02_q4d']],
+  [['施術1週間前まで','03_b1'],['施術前日','03_b2'],['当日のご準備','03_b3']],
+  [['①施術当日','05_s1'],['②翌日〜3日目','05_s2'],['③7〜14日目','05_s3'],['④14日目〜1ヶ月','05_s4']],
+  [['お時間について','06_b1'],['当日のメイクについて','06_b2'],['ご体調について','06_b3'],['キャンセルポリシー','06_b4']],
+];
+const tabLabels = ['01 Flow','02 禁忌','03 FAQ','04 準備','05 After','06 Visit'];
+let currentAdminTab = 0;
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('active');
+  document.getElementById('adminLoginWrap').style.display = 'flex';
+  document.getElementById('adminPanel').classList.remove('active');
+  document.getElementById('adminPw').value = '';
+  document.getElementById('adminErr').style.display = 'none';
+}
+function checkPw() {
+  if (document.getElementById('adminPw').value === PW) {
+    document.getElementById('adminLoginWrap').style.display = 'none';
+    document.getElementById('adminPanel').classList.add('active');
+    buildAdminTabs();
+    showAdminTab(0);
+  } else {
+    document.getElementById('adminErr').style.display = 'block';
+  }
+}
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('active');
+}
+function buildAdminTabs() {
+  const tabs = document.getElementById('adminTabs');
+  tabs.innerHTML = tabLabels.map((l,i) =>
+    `<div class="admin-tab${i===0?' active':''}" onclick="showAdminTab(${i})">${l}</div>`
+  ).join('');
+}
+function showAdminTab(i) {
+  currentAdminTab = i;
+  document.querySelectorAll('.admin-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  const blocks = adminBlocks[i];
+  document.getElementById('adminBody').innerHTML =
+    blocks.map(([label, key]) => `
+      <div class="admin-field">
+        <label>${label}</label>
+        <textarea id="f_${key}" rows="3">${(load(key) || defaults[key] || '').replace(/<br>/g,'\n')}</textarea>
+      </div>`).join('') +
+    `<button class="admin-save" onclick="saveAdminTab(${i})">保存する</button>
+     <p class="admin-saved" id="savedMsg">保存しました ✓</p>`;
+}
+function saveAdminTab(i) {
+  adminBlocks[i].forEach(([,key]) => {
+    const el = document.getElementById('f_' + key);
+    if (el) save(key, el.value);
+  });
+  const msg = document.getElementById('savedMsg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+</script>
+</body>
+</html>
+
